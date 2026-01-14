@@ -40,7 +40,7 @@ maxi = np.max(q)
 mini = np.min(q)
 dev = np.std(q)
 
-# product over avera
+# product over average
 for el in q:
     if el > average:
         print(el)
@@ -76,7 +76,30 @@ plt.plot(daily_revenue.index, daily_revenue, marker='o', linestyle='-', color='g
 plt.savefig("mio_grafico3.png")
 
 
+mapping = {
+    'Smartphone': 'Telefonia',
+    'Laptop': 'Informatica',
+    'Tablet': 'Informatica',
+    'Monitor': 'Informatica',
+    'Hard Disk': 'Informatica',
+    'TV': 'Elettronica',
+    'Console': 'Elettronica',
+    'Smartwatch': 'Wearable',
+    'Cuffie': 'Accessori',
+    'Mouse': 'Accessori',
+    'Tastiera': 'Accessori',
+    'Stampante': 'Ufficio'
+}
 
-print(sales_data["Prodotto"])
+sales_data["Categoria"] = sales_data["Prodotto"].map(mapping)
+sales_data['Categoria'] = sales_data['Categoria'].fillna('Altro')
 
 
+# total revenue per category
+revenue_group_category = sales_data.groupby("Categoria")["incasso"].sum()
+
+# average products sold 
+average_prodcuts_sold = sales_data.groupby("Categoria")["Quantità"].mean()
+
+
+sales_data.to_csv("final_df.csv", index=False)
